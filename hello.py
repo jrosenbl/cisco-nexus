@@ -3,6 +3,8 @@
 # The functions defined below print various summaries to the users console or vty.  They have been developed and
 # tested on the Titanium/N7K image in VIRL.  -- no guarantees for any other Nexus platforms.  Mainly I'm just
 # playing around with the Python API as a learning exercise.
+#
+# Currently there seems to be a bug that causes cli() to behave differently after clid() has been called.
 
 BOLD = '\033[1m'
 UNBOLD = '\033[0;0m'
