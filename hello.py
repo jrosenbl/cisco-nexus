@@ -11,15 +11,31 @@ import re
 
 def pp(cmd):
     """
-    :param cmd: any CLI command
-    :return: pretty prints the dictionary returned by clid(cmd)
+    A convenience function for printing a dictionary one item per line
     """
     cmd_out = clid(cmd)
     for k, v in cmd_out.items():
         print k, ': ', v
 
+def hello2():
+    """
+    Print hostname, platform, software version and uptime.
+    This version uses cli() instead of clid(). Calling clid() seems to have a
+    side effect on subsequent use of cli()
+    """
+    hostname = cli('show hostname').rstrip(' \n')
+    for l in cli('show system uptime').split('\n'):
+        if re.search('System uptime',l):
+            uptime = l.split(':')[1].lstrip()
+    for l in cli('show hardware').split('\n'):
+        if re.search('Switch type',l):
+            hw_type = l.split(':')[1].lstrip()
+        elif re.search('system:',l):
+            sw_vers = l.split(':')[1].lstrip()
+    print "Hello! My name is %s.\nI'm a %s\n  running %s.\nI've been up for %s" % (hostname,hw_type,sw_vers,uptime)
+
 def hello():
-    """ Greets with hostname, platform, software version and uptime """
+    """ Print hostname, platform, software version and uptime """
     cmd = clid('show version')
     msg = '''
 Hello!  My name is %s%s%s.
@@ -139,11 +155,11 @@ def route_counter():
     # return route_count
 
 def intro():
-    hello()
-    print 'I have'
-    summarize_interfaces()
+    hello2()
     neighbor_counter()
     route_counter()
-
+    print 'I have'
+    summarize_interfaces()
+    
 
 
